@@ -3,9 +3,20 @@ from game_obj import GameObj
 
 class Player(GameObj):
 
-    def __init__(self, window):
-        w = 35
-        h = 35
-        x = (window.get_width() / 2) - (w / 2)
-        y = (window.get_height() / 2) - (h / 2)
-        super().__init__(x, y, w, h)
+    def __init__(self, speed):
+        super().__init__(0, 0, 35, 35)
+        self.speed = speed
+
+    def update_display_pos(self, window):
+        self.display_x = (window.get_width() / 2) - (self.width / 2)
+        self.display_y = (window.get_height() / 2) - (self.height / 2)
+
+    def move(self, direction):
+        if direction == "left":
+            self.global_x -= self.speed
+        elif direction == "right":
+            self.global_x += self.speed
+        elif direction == "up":
+            self.global_y -= self.speed
+        elif direction == "down":
+            self.global_y += self.speed
