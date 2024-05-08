@@ -1,4 +1,4 @@
-import pygamejj
+import pygame
 
 class GameObj:
 
