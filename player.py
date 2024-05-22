@@ -4,7 +4,7 @@ from game_obj import GameObj
 class Player(GameObj):
 
     def __init__(self, speed):
-        super().__init__(0, 0, 35, 35)
+        super().__init__(0, 0, 50, 50, "assets/Slime.png")
         self.speed = speed
 
     def update_display_pos(self, window):

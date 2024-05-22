@@ -1,6 +1,7 @@
 import pygame
 from player import Player
 from game_obj import GameObj
+from enemy import Enemy
 class Game:
     
     def __init__(self):
@@ -9,7 +10,10 @@ class Game:
         self.clock = pygame.time.Clock()
         self.fps = 60
         self.player = Player(5)
-        self.rock = GameObj(100, 100, 20, 20)
+        self.rock = GameObj(100, 100, 35, 35, "assets/Rock.png")
+        self.zombie = Enemy(100, 100, 30, 50, "assets/Zombie.png", 3, 5, 20)
+        self.street = pygame.image.load("assets/Background.png")
+        self.street = pygame.transform.scale(self.street, (800, 800))
         self.main_game_loop()
 
     def main_game_loop(self):
@@ -40,9 +44,15 @@ class Game:
     def update(self):
         self.player.update_display_pos(self.window)
         self.rock.update_display_pos(self.player)
+        self.zombie.update_display_pos(self.player)
 
     def draw(self):
         self.window.fill((0, 0, 0))
+        self.draw_background()
         self.player.draw(self.window)
         self.rock.draw(self.window)
+        self.zombie.draw(self.window)
         pygame.display.update()
+
+    def draw_background(self):
+        self.window.blit(self.street, (0 - self.player.global_x, 0 - self.player.global_y))
