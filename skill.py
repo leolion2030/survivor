@@ -1,7 +1,11 @@
 import pygame
 from game_obj import GameObj
 
-class Skill(GameObj):
+class Skill:
+    def __init__(self, name, projectile, cooldown):
+        self.name = name
+        self.projectile = projectile
+        self.cooldown = cooldown
 
-    def __init__(speed, x, y, width, height, name, dmg, projectiles, image):
-        super().__init__(x, y, width, height, image)
+    def use(self):
+        self.projectile.shoot()

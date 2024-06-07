@@ -19,6 +19,9 @@ class GameObj:
         pygame.draw.rect(window, (0, 255, 0), self.get_hitbox())
         window.blit(self.sprite, (self.display_x, self.display_y))
 
+    def update(self, player):
+        self.update_display_pos(player)
+
     def update_display_pos(self, player):
         self.display_x = player.display_x + (self.global_x - player.global_x)
         self.display_y = player.display_y+ (self.global_y - player.global_y)
