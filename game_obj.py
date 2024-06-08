@@ -2,15 +2,16 @@ import pygame
 
 class GameObj:
 
-    def __init__(self, global_x, global_y, width, height, image):
+    def __init__(self, global_x, global_y, width, height, image = None):
         self.width = width
         self.height = height
         self.global_x = global_x
         self.global_y = global_y
         self.display_x = None
         self.display_y = None
-        self.sprite = pygame.image.load(image)
-        self.sprite = pygame.transform.scale(self.sprite, (width, height))
+        if image != None:
+            self.sprite = pygame.image.load(image)
+            self.sprite = pygame.transform.scale(self.sprite, (width, height))
         
     def get_hitbox(self):
         return pygame.Rect(self.display_x, self.display_y, self.width, self.height)
