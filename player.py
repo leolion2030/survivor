@@ -18,7 +18,20 @@ class Player(GameObj):
 
     def move(self, direction):
         self.direction = direction
-        if direction == "left":
+        # x = sqrt(speed^2/2)
+        if direction == "upright":
+            self.global_x += self.speed
+            self.global_y -= self.speed
+        elif direction == "upleft":
+            self.global_x -= self.speed
+            self.global_y -= self.speed
+        elif direction == "downright":
+            self.global_x += self.speed
+            self.global_y += self.speed
+        elif direction == "downleft":
+            self.global_x -= self.speed
+            self.global_y += self.speed
+        elif direction == "left":
             self.global_x -= self.speed
         elif direction == "right":
             self.global_x += self.speed
@@ -30,5 +43,4 @@ class Player(GameObj):
     def update(self, window):
         self.update_display_pos(window)
         for skill in self.skill_set:
-            for projectile in skill.active_projectiles:
-                projectile.update(self)
+            skill.update(self)

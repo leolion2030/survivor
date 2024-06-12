@@ -9,7 +9,7 @@ class Game:
         self.window = pygame.display.set_mode((1000, 1000))
         self.clock = pygame.time.Clock()
         self.fps = 60
-        self.player = Player(15)
+        self.player = Player(5)
         self.rock = GameObj(100, 100, 35, 35, "assets/Rock.png")
         self.zombie = Enemy(100, 100, 30, 50, "assets/Zombie.png", 3, 5, 20)
         self.street = pygame.image.load("assets/Background.png")
@@ -36,11 +36,19 @@ class Game:
 
     def key_handler(self):
         pressed_keys = pygame.key.get_pressed()
-        if pressed_keys[pygame.K_w] == True:
+        if pressed_keys[pygame.K_w] == True and pressed_keys[pygame.K_d] == True:
+            self.player.move("upright")
+        elif pressed_keys[pygame.K_w] == True and pressed_keys[pygame.K_a] == True:
+            self.player.move("upleft")
+        elif pressed_keys[pygame.K_s] == True and pressed_keys[pygame.K_d] == True:
+            self.player.move("downright")
+        elif pressed_keys[pygame.K_s] == True and pressed_keys[pygame.K_a] == True:
+            self.player.move("downleft")
+        elif pressed_keys[pygame.K_w] == True:
             self.player.move("up")
         elif pressed_keys[pygame.K_s] == True:
             self.player.move("down")
-        if pressed_keys[pygame.K_a] == True:
+        elif pressed_keys[pygame.K_a] == True:
             self.player.move("left")
         elif pressed_keys[pygame.K_d] == True:
             self.player.move("right")

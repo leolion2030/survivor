@@ -9,6 +9,7 @@ class Projectile(GameObj):
         self.direction = direction
         self.active = False
         self.max_range = max_range
+        self.current_distance = 0
 
     def shoot(self):
         self.active = True
@@ -24,7 +25,19 @@ class Projectile(GameObj):
     def update(self, player):
         self.update_display_pos(player)
         if self.active == True:
-            if self.direction == "up":
+            if self.direction == "upright":
+                self.global_x += self.speed
+                self.global_y -= self.speed
+            elif self.direction == "upleft":
+                self.global_x -= self.speed
+                self.global_y -= self.speed
+            elif self.direction == "downright":
+                self.global_x += self.speed
+                self.global_y += self.speed
+            elif self.direction == "downleft":
+                self.global_x -= self.speed
+                self.global_y += self.speed
+            elif self.direction == "up":
                 self.global_y -= self.speed
             elif self.direction == "down":
                 self.global_y += self.speed
@@ -32,4 +45,7 @@ class Projectile(GameObj):
                 self.global_x -= self.speed
             elif self.direction == "right":
                 self.global_x += self.speed
-            
+
+            self.current_distance += self.speed
+            if self.current_distance == self.max_range:
+                self.active = False
