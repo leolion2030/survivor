@@ -26,3 +26,16 @@ class GameObj:
     def update_display_pos(self, player):
         self.display_x = player.display_x + (self.global_x - player.global_x)
         self.display_y = player.display_y+ (self.global_y - player.global_y)
+    
+    def check_collision(self, projectile_list):
+        hitbox_list = []
+        for projectile in projectile_list:
+            hitbox_list.append(projectile.get_hitbox())
+
+        collide = self.get_hitbox().collidelist(hitbox_list)
+
+        if collide == -1:
+            return False
+        else:
+            projectile_list[collide].hit()
+            return True

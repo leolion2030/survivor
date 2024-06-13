@@ -19,8 +19,8 @@ class Projectile(GameObj):
         copy.sprite = self.sprite
         return copy
 
-    def reset(self):
-        pass
+    def hit(self):
+        self.active = False 
 
     def update(self, player):
         self.update_display_pos(player)

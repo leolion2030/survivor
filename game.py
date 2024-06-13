@@ -24,6 +24,7 @@ class Game:
             self.event_handler()
             self.key_handler()
             self.update()
+            self.check_enemies_hit()
             self.draw()
 
     def event_handler(self):
@@ -85,3 +86,7 @@ class Game:
 
     def set_up_timer(self): 
         pygame.time.set_timer(self.skill1event, self.player.skill_set[0].cooldown)
+
+    def check_enemies_hit(self):
+        if self.zombie.check_collision(self.player.skill_set[0].active_projectiles) == True:
+            print("hi")

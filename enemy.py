@@ -10,3 +10,8 @@ class Enemy(GameObj):
         self.max_hp = hp
         self.current_hp = hp
     
+    def take_dmg(self, dmg):
+        self.current_hp -= dmg
+        print(self.current_hp + "/" + self.max_hp)
+        if self.current_hp <= 0:
+            pass
