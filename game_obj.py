@@ -35,7 +35,7 @@ class GameObj:
         collide = self.get_hitbox().collidelist(hitbox_list)
 
         if collide == -1:
-            return False
+            return None
         else:
             projectile_list[collide].hit()
-            return True
+            return projectile_list[collide]

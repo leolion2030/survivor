@@ -11,7 +11,7 @@ class Game:
         self.fps = 60
         self.player = Player(5)
         self.rock = GameObj(100, 100, 35, 35, "assets/Rock.png")
-        self.zombie = Enemy(100, 100, 30, 50, "assets/Zombie.png", 3, 5, 20)
+        self.zombie = Enemy(100, 100, 30, 50, "assets/Zombie.png", 3, 5, 50)
         self.street = pygame.image.load("assets/Background.png")
         self.street = pygame.transform.scale(self.street, (1001, 1001))
         self.skill1event = pygame.event.custom_type()
@@ -57,14 +57,16 @@ class Game:
     def update(self):
         self.player.update(self.window)
         self.rock.update(self.player)
-        self.zombie.update(self.player)
+        self.zombie.update(self.player, self.window)
         
     def draw(self):
         self.window.fill((0, 0, 0))
         self.draw_background()
         self.player.draw(self.window)
         self.rock.draw(self.window)
-        self.zombie.draw(self.window)
+        if self.zombie.alive == True:
+            self.zombie.draw(self.window)
+            self.zombie.hp_bar.draw(self.window, self.zombie.display_x, self.zombie.display_y)
         self.draw_projectiles()
         pygame.display.update()
 
@@ -88,5 +90,7 @@ class Game:
         pygame.time.set_timer(self.skill1event, self.player.skill_set[0].cooldown)
 
     def check_enemies_hit(self):
-        if self.zombie.check_collision(self.player.skill_set[0].active_projectiles) == True:
-            print("hi")
+        if self.zombie.alive == True:
+            used_projectile = self.zombie.check_collision(self.player.skill_set[0].active_projectiles)
+            if  used_projectile != None:
+                self.zombie.take_dmg(used_projectile.dmg)
