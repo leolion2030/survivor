@@ -19,7 +19,12 @@ class Enemy(GameObj):
         if self.current_hp <= 0:
             self.alive = False
 
-    def update(self, player, window):
+    def update(self, player):
         super().update(player)
         self.hp_bar.update(self.current_hp)
+
+    def copy(self, x, y):
+        copy = Enemy(x, y, self.width, self.height, None, self.speed, self.dmg, self.max_hp)
+        copy.sprite = self.sprite
+        return copy
         
