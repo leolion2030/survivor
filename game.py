@@ -2,6 +2,7 @@ import pygame
 from player import Player
 from game_obj import GameObj
 from enemy import Enemy
+import random
 class Game:
     
     def __init__(self):
@@ -110,7 +111,32 @@ class Game:
     def spawn_enemies(self):
         amount_copy = 4
         for i in range(amount_copy):
-            #TODO: randomize spawn position
-            new_mob = self.base_zombie.copy(self.base_zombie.global_x, self.base_zombie.global_y)
-            self.mob_list.append(new_mob)
-            
+            self.spawn_randomly(self.base_zombie)
+
+    def spawn_randomly(self, base_mob):
+        side = random.choice(["top", "left", "bottom", "right"])
+        if side == "top":
+            y = 0 - base_mob.height
+            x = random.randrange(0 - base_mob.width, self.window.get_width())
+        if side == "bottom":
+            y = self.window.get_height()
+            x = random.randrange(0 - base_mob.width, self.window.get_width())
+        if side == "left":
+            y = random.randrange(0 - base_mob.height, self.window.get_height())
+            x = 0 - base_mob.width
+        if side == "right":
+            y = random.randrange(0 - base_mob.height, self.window.get_height())
+            x = self.window.get_width()
+        global_x_y = self.convert_display_to_global(x, y)
+        new_mob = self.base_zombie.copy(global_x_y[0], global_x_y[1])
+        self.mob_list.append(new_mob)
+
+    def convert_global_to_display(self, global_x, global_y):
+        return
+    
+    def convert_display_to_global(self, display_x, display_y):
+        dif_x = self.player.display_x - display_x
+        dif_y = self.player.display_y - display_y
+        global_x = self.player.global_x + dif_x
+        global_y = self.player.global_y + dif_y
+        return [global_x, global_y]
