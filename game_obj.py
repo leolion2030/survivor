@@ -41,3 +41,9 @@ class GameObj:
         else:
             projectile_list[collide].hit()
             return projectile_list[collide]
+        
+    def get_center(self):
+        x = self.global_x + self.width/2
+        y = self.global_y + self.height/2
+        xy = (x, y)
+        return xy

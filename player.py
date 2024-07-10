@@ -9,7 +9,7 @@ class Player(GameObj):
         super().__init__(0, 0, 50, 50, "assets/Slime.png")
         self.direction = "up"
         self.speed = speed
-        water_gun = Skill("Water Gun", Projectile(self.global_x, self.global_y, 10, 10, "assets/Bullet.png", 10, 25, self.direction, 500), 2000)
+        water_gun = Skill("Water Gun", Projectile(self.global_x, self.global_y, 10, 10, "assets/Bullet.png", 10, 25, self.direction, 500), 1)
         self.skill_set = [water_gun]  
 
     def update_display_pos(self, window):
