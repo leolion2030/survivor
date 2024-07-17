@@ -9,8 +9,10 @@ class Player(GameObj):
         super().__init__(0, 0, 50, 50, "assets/Slime.png")
         self.direction = "up"
         self.speed = speed
-        water_gun = Skill("Water Gun", Projectile(self.global_x, self.global_y, 10, 10, "assets/Bullet.png", 10, 25, self.direction, 500), 1)
-        self.skill_set = [water_gun]  
+        water_gun = Skill("Water Gun", Projectile(self.global_x, self.global_y, 10, 10, "assets/Bullet.png", 10, 25, self.direction, 500), 1000)
+        self.skill_set = [water_gun]
+        self.max_hp = 1000
+        self.current_hp = self.max_hp  
 
     def update_display_pos(self, window):
         self.display_x = (window.get_width() / 2) - (self.width / 2)
@@ -44,3 +46,9 @@ class Player(GameObj):
         self.update_display_pos(window)
         for skill in self.skill_set:
             skill.update(self)
+
+    def take_dmg(self, dmg):
+        self.current_hp -= dmg
+        print(f"{self.current_hp}/{self.max_hp} hp")
+        if self.current_hp <= 0:
+            self.alive = False

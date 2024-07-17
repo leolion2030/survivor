@@ -9,6 +9,7 @@ class GameObj:
         self.global_y = global_y
         self.display_x = None
         self.display_y = None
+        self.hitbox_color = (0, 255, 0)
         if image != None:
             self.sprite = pygame.image.load(image)
             self.sprite = pygame.transform.scale(self.sprite, (width, height))
@@ -17,7 +18,7 @@ class GameObj:
         return pygame.Rect(self.display_x, self.display_y, self.width, self.height)
     
     def draw(self, window:pygame.Surface):
-        pygame.draw.rect(window, (0, 255, 0), self.get_hitbox())
+        pygame.draw.rect(window, self.hitbox_color, self.get_hitbox())
         window.blit(self.sprite, (self.display_x, self.display_y))
 
     def update(self, player):

@@ -13,7 +13,7 @@ class Game:
 
         self.player = Player(5)
         self.rock = GameObj(100, 100, 35, 35, "assets/Rock.png")
-        self.base_zombie = Enemy(100, 100, 30, 50, "assets/Zombie.png", 3, 5, 50)
+        self.base_zombie = Enemy(100, 100, 30, 50, "assets/Zombie.png", 3, 15, 50, 500)
         self.mob_list = []
 
         self.street = pygame.image.load("assets/Background.png")
@@ -21,6 +21,7 @@ class Game:
 
         self.skill1event = pygame.event.custom_type()
         self.spawn_event = pygame.event.custom_type()
+        self.ready_event = pygame.event.custom_type()
         self.set_up_timers()
 
         self.main_game_loop()
@@ -43,6 +44,11 @@ class Game:
                 self.player.skill_set[0].use(self.player)
             elif event.type == self.spawn_event:
                 self.spawn_enemies()
+            elif event.type == self.ready_event:
+                for mob in self.mob_list:
+                    if event.enemy == mob:
+                        mob.atk_ready = True
+                        mob.hitbox_color = (0, 0, 255)
 
     def key_handler(self):
         pressed_keys = pygame.key.get_pressed()
@@ -129,6 +135,7 @@ class Game:
             x = self.window.get_width()
         global_x_y = self.convert_display_to_global(x, y)
         new_mob = self.base_zombie.copy(global_x_y[0], global_x_y[1])
+        new_mob.start_atk_timer(self.ready_event)
         self.mob_list.append(new_mob)
 
     def convert_global_to_display(self, global_x, global_y):

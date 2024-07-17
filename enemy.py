@@ -18,7 +18,7 @@ class Enemy(GameObj):
     
     def take_dmg(self, dmg):
         self.current_hp -= dmg
-        print(f"{self.current_hp}/{self.max_hp} hp")
+        #print(f"{self.current_hp}/{self.max_hp} hp")
         if self.current_hp <= 0:
             self.alive = False
 
@@ -26,10 +26,17 @@ class Enemy(GameObj):
         self.calculate_direction(player)
         self.move()
         super().update(player)
+        self.check_touching_player(player)
         self.hp_bar.update(self.current_hp)
 
+    def check_touching_player(self, player):
+        if self.atk_ready == True:
+            if self.get_hitbox().colliderect(player.get_hitbox()):
+                player.take_dmg(self.dmg)
+                self.atk_ready = False
+
     def copy(self, x, y):
-        copy = Enemy(x, y, self.width, self.height, None, self.speed, self.dmg, self.max_hp)
+        copy = Enemy(x, y, self.width, self.height, None, self.speed, self.dmg, self.max_hp, self.atk_cd)
         copy.sprite = self.sprite
         return copy
     
@@ -45,6 +52,7 @@ class Enemy(GameObj):
         self.global_x += self.direction.x*self.speed
         self.global_y += self.direction.y*self.speed
     
-    def start_atk_timer(self):
-        #TODO set up timer
-        pygame.time.set_timer()
+    def start_atk_timer(self, event_timer):
+        attribute = {"enemy": self}
+        event = pygame.event.Event(event_timer, attribute)
+        pygame.time.set_timer(event, self.atk_cd, 1)
