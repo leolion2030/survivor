@@ -2,13 +2,15 @@ import pygame
 
 class GameObj:
 
-    def __init__(self, global_x, global_y, width, height, image = None):
+    def __init__(self, global_x, global_y, width, height, player = None, image = None):
         self.width = width
         self.height = height
         self.global_x = global_x
         self.global_y = global_y
         self.display_x = None
         self.display_y = None
+        if player != None:
+            self.update_display_pos(player)
         self.hitbox_color = (0, 255, 0)
         if image != None:
             self.sprite = pygame.image.load(image)

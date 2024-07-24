@@ -11,9 +11,9 @@ class Game:
         self.clock = pygame.time.Clock()
         self.fps = 60
 
-        self.player = Player(5)
-        self.rock = GameObj(100, 100, 35, 35, "assets/Rock.png")
-        self.base_zombie = Enemy(100, 100, 30, 50, "assets/Zombie.png", 3, 15, 50, 500)
+        self.player = Player(5, self.window)
+        self.rock = GameObj(100, 100, 35, 35, self.player, "assets/Rock.png")
+        self.base_zombie = Enemy(100, 100, 30, 50, self.player, "assets/Zombie.png", 3, 15, 50, 30)
         self.mob_list = []
 
         self.street = pygame.image.load("assets/Background.png")
@@ -21,7 +21,6 @@ class Game:
 
         self.skill1event = pygame.event.custom_type()
         self.spawn_event = pygame.event.custom_type()
-        self.ready_event = pygame.event.custom_type()
         self.set_up_timers()
 
         self.main_game_loop()
@@ -44,11 +43,6 @@ class Game:
                 self.player.skill_set[0].use(self.player)
             elif event.type == self.spawn_event:
                 self.spawn_enemies()
-            elif event.type == self.ready_event:
-                for mob in self.mob_list:
-                    if event.enemy == mob:
-                        mob.atk_ready = True
-                        mob.hitbox_color = (0, 0, 255)
 
     def key_handler(self):
         pressed_keys = pygame.key.get_pressed()
@@ -74,11 +68,14 @@ class Game:
         self.rock.update(self.player)
         for mob in self.mob_list:
             mob.update(self.player)
+            if mob.alive == False:
+                self.mob_list.remove(mob)
         
     def draw(self):
         self.window.fill((0, 0, 0))
         self.draw_background()
         self.player.draw(self.window)
+        self.player.hp_bar.draw(self.window, self.player.display_x, self.player.display_y)
         self.rock.draw(self.window)
         for mob in self.mob_list:
             if mob.alive == True:
@@ -115,7 +112,7 @@ class Game:
                     mob.take_dmg(used_projectile.dmg)
 
     def spawn_enemies(self):
-        amount_copy = 4
+        amount_copy = 2
         for i in range(amount_copy):
             self.spawn_randomly(self.base_zombie)
 
@@ -134,11 +131,11 @@ class Game:
             y = random.randrange(0 - base_mob.height, self.window.get_height())
             x = self.window.get_width()
         global_x_y = self.convert_display_to_global(x, y)
-        new_mob = self.base_zombie.copy(global_x_y[0], global_x_y[1])
-        new_mob.start_atk_timer(self.ready_event)
+        new_mob = self.base_zombie.copy(global_x_y[0], global_x_y[1], self.player)
         self.mob_list.append(new_mob)
 
     def convert_global_to_display(self, global_x, global_y):
+        #TODO: implement function
         return
     
     def convert_display_to_global(self, display_x, display_y):
