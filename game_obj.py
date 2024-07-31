@@ -31,7 +31,7 @@ class GameObj:
         self.display_y = player.display_y+ (self.global_y - player.global_y)
     
     def check_collision(self, projectile_list):
-        #TODO: collide with motiple bullets
+        #TODO: collide with multiple bullets
         hitbox_list = []
         for projectile in projectile_list:
             if projectile.active == True:

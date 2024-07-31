@@ -2,6 +2,7 @@ import pygame
 from player import Player
 from game_obj import GameObj
 from enemy import Enemy
+from exp_orb import ExpOrb
 import random
 class Game:
     
@@ -15,6 +16,7 @@ class Game:
         self.rock = GameObj(100, 100, 35, 35, self.player, "assets/Rock.png")
         self.base_zombie = Enemy(100, 100, 30, 50, self.player, "assets/Zombie.png", 3, 15, 50, 30)
         self.mob_list = []
+        self.orb_list = []
 
         self.street = pygame.image.load("assets/Background.png")
         self.street = pygame.transform.scale(self.street, (1001, 1001))
@@ -66,9 +68,17 @@ class Game:
     def update(self):
         self.player.update(self.window)
         self.rock.update(self.player)
+        for orb in self.orb_list:
+            orb.update(self.player)
+            if orb.check_collision(self.player):
+                self.player.gain_exp(orb.exp_amount)
+                self.orb_list.remove(orb)
+                print(self.player.exp)
         for mob in self.mob_list:
             mob.update(self.player)
             if mob.alive == False:
+                exp_orb = ExpOrb(mob, self.player, 25)
+                self.orb_list.append(exp_orb)
                 self.mob_list.remove(mob)
         
     def draw(self):
@@ -81,6 +91,8 @@ class Game:
             if mob.alive == True:
                 mob.draw(self.window)
                 mob.hp_bar.draw(self.window, mob.display_x, mob.display_y)
+        for orb in self.orb_list:
+            orb.draw(self.window)
         self.draw_projectiles()
         pygame.display.update()
 

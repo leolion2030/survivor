@@ -16,6 +16,7 @@ class Player(GameObj):
         self.max_hp = 1000
         self.current_hp = self.max_hp  
         self.hp_bar = HpBar(self.max_hp)
+        self.exp = 0
 
     def update_display_pos(self, window):
         self.display_x = (window.get_width() / 2) - (self.width / 2)
@@ -56,3 +57,6 @@ class Player(GameObj):
         print(f"{self.current_hp}/{self.max_hp} hp")
         if self.current_hp <= 0:
             self.alive = False
+
+    def gain_exp(self, exp_amount):
+        self.exp += exp_amount
