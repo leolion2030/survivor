@@ -1,8 +1,10 @@
 import pygame
+import math
 from skill import Skill
 from game_obj import GameObj
 from projectile import Projectile
 from hp_bar import HpBar
+from exp_bar import ExpBar
 
 class Player(GameObj):
 
@@ -17,6 +19,9 @@ class Player(GameObj):
         self.current_hp = self.max_hp  
         self.hp_bar = HpBar(self.max_hp)
         self.exp = 0
+        self.level = 0
+        self.exp_require = 250
+        self.exp_bar = ExpBar(self.exp, self.exp_require, self.level)
 
     def update_display_pos(self, window):
         self.display_x = (window.get_width() / 2) - (self.width / 2)
@@ -51,6 +56,7 @@ class Player(GameObj):
         for skill in self.skill_set:
             skill.update(self)
         self.hp_bar.update(self.current_hp)
+        self.exp_bar.update(self.exp, self.exp_require, self.level)
 
     def take_dmg(self, dmg):
         self.current_hp -= dmg
@@ -60,3 +66,6 @@ class Player(GameObj):
 
     def gain_exp(self, exp_amount):
         self.exp += exp_amount
+        if self.exp >= self.exp_require:
+            self.level += 1
+            self.exp_require = math.ceil(self.exp_require + (self.exp_require * 1.25))

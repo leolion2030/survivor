@@ -86,6 +86,7 @@ class Game:
         self.draw_background()
         self.player.draw(self.window)
         self.player.hp_bar.draw(self.window, self.player.display_x, self.player.display_y)
+        self.player.exp_bar.draw(self.window)
         self.rock.draw(self.window)
         for mob in self.mob_list:
             if mob.alive == True:
