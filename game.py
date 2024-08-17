@@ -4,6 +4,7 @@ from game_obj import GameObj
 from enemy import Enemy
 from exp_orb import ExpOrb
 import random
+from upgrade import Upgrade
 class Game:
     
     def __init__(self):
@@ -11,8 +12,10 @@ class Game:
         self.window = pygame.display.set_mode((1000, 1000))
         self.clock = pygame.time.Clock()
         self.fps = 60
+        self.gamestate = "Playing"
+        self.level_up_event = pygame.event.custom_type()
 
-        self.player = Player(5, self.window)
+        self.player = Player(5, self.window , self.level_up_event)
         self.rock = GameObj(100, 100, 35, 35, self.player, "assets/Rock.png")
         self.base_zombie = Enemy(100, 100, 30, 50, self.player, "assets/Zombie.png", 3, 15, 50, 30)
         self.mob_list = []
@@ -23,18 +26,22 @@ class Game:
 
         self.skill1event = pygame.event.custom_type()
         self.spawn_event = pygame.event.custom_type()
-        self.set_up_timers()
+        self.start_timers()
 
         self.main_game_loop()
 
     def main_game_loop(self):
         while True:
-            self.clock.tick(self.fps)
-            self.event_handler()
-            self.key_handler()
-            self.update()
-            self.check_enemies_hit()
-            self.draw()
+            if self.gamestate == "Playing":
+                self.clock.tick(self.fps)
+                self.event_handler()
+                self.key_handler()
+                self.update()
+                self.check_enemies_hit()
+                self.draw()
+            elif self.gamestate == "LevelUp":
+                self.event_handler_levelup()
+                self.draw_upgrades()
 
     def event_handler(self):
         for event in pygame.event.get():
@@ -45,6 +52,15 @@ class Game:
                 self.player.skill_set[0].use(self.player)
             elif event.type == self.spawn_event:
                 self.spawn_enemies()
+            elif event.type == self.level_up_event:
+                self.gamestate = "LevelUp"
+                self.pause_timers()
+                
+    def event_handler_levelup(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
 
     def key_handler(self):
         pressed_keys = pygame.key.get_pressed()
@@ -112,10 +128,13 @@ class Game:
         self.window.blit(self.street, q3)
         self.window.blit(self.street, q4)
         
-
-    def set_up_timers(self): 
+    def start_timers(self): 
         pygame.time.set_timer(self.skill1event, self.player.skill_set[0].cooldown)
         pygame.time.set_timer(self.spawn_event, 3000)
+    
+    def pause_timers(self):
+        pygame.time.set_timer(self.skill1event, 0)
+        pygame.time.set_timer(self.spawn_event, 0)
 
     def check_enemies_hit(self):
         for mob in self.mob_list:
@@ -157,3 +176,12 @@ class Game:
         global_x = self.player.global_x + dif_x
         global_y = self.player.global_y + dif_y
         return [global_x, global_y]
+    
+    def draw_upgrades(self):
+        upgrade_1 = Upgrade(200)
+        upgrade_2 = Upgrade(400)
+        upgrade_3 = Upgrade(600)
+        upgrade_1.draw(self.window)
+        upgrade_2.draw(self.window)
+        upgrade_3.draw(self.window)
+        pygame.display.update()

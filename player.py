@@ -8,7 +8,7 @@ from exp_bar import ExpBar
 
 class Player(GameObj):
 
-    def __init__(self, speed, window):
+    def __init__(self, speed, window, level_up_event):
         super().__init__(0, 0, 50, 50, image="assets/Slime.png")
         self.update_display_pos(window)
         self.direction = "up"
@@ -22,6 +22,7 @@ class Player(GameObj):
         self.level = 0
         self.exp_require = 250
         self.exp_bar = ExpBar(self.exp, self.exp_require, self.level)
+        self.level_up_event = level_up_event
 
     def update_display_pos(self, window):
         self.display_x = (window.get_width() / 2) - (self.width / 2)
@@ -67,5 +68,6 @@ class Player(GameObj):
     def gain_exp(self, exp_amount):
         self.exp += exp_amount
         if self.exp >= self.exp_require:
+            pygame.event.post(pygame.event.Event(self.level_up_event))
             self.level += 1
             self.exp_require = math.ceil(self.exp_require + (self.exp_require * 1.25))
