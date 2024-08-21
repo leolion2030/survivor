@@ -28,6 +28,14 @@ class Game:
         self.spawn_event = pygame.event.custom_type()
         self.start_timers()
 
+        self.upgrade_list = ["water_gunupg1", "water_gunupg2"]
+        self.skill_list = ["water_gun"]
+        self.current_upg_options = [
+            Upgrade(100, self.upgrade_list [0]),
+            Upgrade(400, self.upgrade_list [1]),
+            Upgrade(700, "TODO")
+        ]
+
         self.main_game_loop()
 
     def main_game_loop(self):
@@ -61,6 +69,17 @@ class Game:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_1:
+                    self.player.gain_upg(self.current_upg_options[0].upg)
+                    self.gamestate = "Playing"
+                    self.start_timers()
+                elif event.key == pygame.K_2:
+                    self.player.gain_upg(self.current_upg_options[1].upg)
+                    self.gamestate = "Playing"
+                    self.start_timers()
+                elif event.key == pygame.K_3:
+                    pass
 
     def key_handler(self):
         pressed_keys = pygame.key.get_pressed()
@@ -178,10 +197,6 @@ class Game:
         return [global_x, global_y]
     
     def draw_upgrades(self):
-        upgrade_1 = Upgrade(200)
-        upgrade_2 = Upgrade(400)
-        upgrade_3 = Upgrade(600)
-        upgrade_1.draw(self.window)
-        upgrade_2.draw(self.window)
-        upgrade_3.draw(self.window)
+        for upg in self.current_upg_options:
+            upg.draw(self.window)
         pygame.display.update()

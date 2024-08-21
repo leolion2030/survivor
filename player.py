@@ -13,14 +13,19 @@ class Player(GameObj):
         self.update_display_pos(window)
         self.direction = "up"
         self.speed = speed
-        water_gun = Skill("Water Gun", Projectile(self.global_x, self.global_y, 10, 10, self, "assets/Bullet.png", 10, 25, self.direction, 500), 100)
+        water_gun = Skill(
+            "Water Gun", 
+            Projectile(self.global_x, self.global_y, 10, 10, self, "assets/Bullet.png", 10, 25, self.direction, 500),
+            1000,
+            ["Forward"]
+        )
         self.skill_set = [water_gun]
         self.max_hp = 1000
         self.current_hp = self.max_hp  
         self.hp_bar = HpBar(self.max_hp)
         self.exp = 0
         self.level = 0
-        self.exp_require = 250
+        self.exp_require = 25
         self.exp_bar = ExpBar(self.exp, self.exp_require, self.level)
         self.level_up_event = level_up_event
 
@@ -71,3 +76,12 @@ class Player(GameObj):
             pygame.event.post(pygame.event.Event(self.level_up_event))
             self.level += 1
             self.exp_require = math.ceil(self.exp_require + (self.exp_require * 1.25))
+
+    def gain_upg(self, upg):
+        match upg:
+            case "water_gunupg1":
+                self.skill_set[0].cooldown -= 150
+                if self.skill_set[0].cooldown < 1:
+                    self.skill_set[0].cooldown = 1
+            case "water_gunupg2":
+                self.skill_set[0].shoot_type.append("Backward")
