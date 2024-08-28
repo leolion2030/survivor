@@ -57,12 +57,20 @@ class Game:
                 pygame.quit()
                 quit()
             elif event.type == self.skill1event:
-                self.player.skill_set[0].use(self.player)
+                self.use_skill(0)
             elif event.type == self.spawn_event:
                 self.spawn_enemies()
             elif event.type == self.level_up_event:
                 self.gamestate = "LevelUp"
                 self.pause_timers()
+    
+    def use_skill(self, skillnum):
+        skill = self.player.skill_set[skillnum]
+        if "Nearest" in skill.shoot_type:
+            #TODO Find nearest enemie
+            skill.use(self.player, "Nearest")
+        else:
+            skill.use(self.player)
                 
     def event_handler_levelup(self):
         for event in pygame.event.get():

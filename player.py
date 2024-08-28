@@ -5,6 +5,7 @@ from game_obj import GameObj
 from projectile import Projectile
 from hp_bar import HpBar
 from exp_bar import ExpBar
+from aoe import AOE
 
 class Player(GameObj):
 
@@ -17,7 +18,16 @@ class Player(GameObj):
             "Water Gun", 
             Projectile(self.global_x, self.global_y, 10, 10, self, "assets/Bullet.png", 10, 25, self.direction, 500),
             1000,
-            ["Forward"]
+            ["Forward"],
+            ["Single"]
+        )
+        fire_potion = Skill(
+            "Fire Potion", 
+            Projectile(self.global_x, self.global_y, 20, 20, self, "assets/potion/frame_00_delay-0.4s.png", 10, 25, self.direction, 750),
+            2000, 
+            ["Nearest"],
+            ["Aoe"],
+            aoe = AOE(self.global_x, self.global_y, 40, 40, self, "assets/Rock.png", 2500, 15, 500)
         )
         self.skill_set = [water_gun]
         self.max_hp = 1000

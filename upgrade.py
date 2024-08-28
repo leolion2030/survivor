@@ -23,5 +23,7 @@ class Upgrade:
         match self.upg:
             case "water_gunupg1":
                 self.upg_img = pygame.image.load("assets/water_gun1upg.png")
+            case "water_gunupg2":
+                self.upg_img = pygame.image.load("assets/water_gun2upg.png")
             case _:
                 self.upg_img = pygame.image.load("assets/Rock.png")
