@@ -5,6 +5,7 @@ from enemy import Enemy
 from exp_orb import ExpOrb
 import random
 from upgrade import Upgrade
+import math
 class Game:
     
     def __init__(self):
@@ -47,6 +48,7 @@ class Game:
                 self.update()
                 self.check_enemies_hit()
                 self.draw()
+                self.find_nearest_enemy()
             elif self.gamestate == "LevelUp":
                 self.event_handler_levelup()
                 self.draw_upgrades()
@@ -71,7 +73,19 @@ class Game:
             skill.use(self.player, "Nearest")
         else:
             skill.use(self.player)
-                
+
+    def find_nearest_enemy(self):
+        closest_mob = None
+        closest_dis = math.inf
+        for pokemon in self.mob_list:
+            diffx = pokemon.global_x - self.player.global_x
+            diffy = pokemon.global_y - self.player.global_y
+            distance = math.sqrt(diffx*diffx+diffy*diffy)
+            if closest_dis >= distance:
+                closest_dis = distance
+                closest_mob = pokemon
+        return closest_mob
+
     def event_handler_levelup(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
