@@ -26,6 +26,7 @@ class Game:
         self.street = pygame.transform.scale(self.street, (1001, 1001))
 
         self.skill1event = pygame.event.custom_type()
+        self.skill2event = pygame.event.custom_type()
         self.spawn_event = pygame.event.custom_type()
         self.start_timers()
 
@@ -60,6 +61,9 @@ class Game:
                 quit()
             elif event.type == self.skill1event:
                 self.use_skill(0)
+            elif event.type == self.skill2event:
+                if len (self.player.skill_set) >= 2:
+                    self.use_skill(1)
             elif event.type == self.spawn_event:
                 self.spawn_enemies()
             elif event.type == self.level_up_event:
@@ -69,8 +73,7 @@ class Game:
     def use_skill(self, skillnum):
         skill = self.player.skill_set[skillnum]
         if "Nearest" in skill.shoot_type:
-            #TODO Find nearest enemie
-            skill.use(self.player, "Nearest")
+            skill.use(self.player, self.find_nearest_enemy())
         else:
             skill.use(self.player)
 
@@ -101,7 +104,9 @@ class Game:
                     self.gamestate = "Playing"
                     self.start_timers()
                 elif event.key == pygame.K_3:
-                    pass
+                    self.player.gain_skill("fire_potion")
+                    self.gamestate = "Playing"
+                    self.start_timers()
 
     def key_handler(self):
         pressed_keys = pygame.key.get_pressed()
@@ -170,7 +175,8 @@ class Game:
         self.window.blit(self.street, q4)
         
     def start_timers(self): 
-        pygame.time.set_timer(self.skill1event, self.player.skill_set[0].cooldown)
+        pygame.time.set_timer(self.skill1event, self.player.water_gun.cooldown)
+        pygame.time.set_timer(self.skill2event, self.player.fire_potion.cooldown)
         pygame.time.set_timer(self.spawn_event, 3000)
     
     def pause_timers(self):
@@ -222,3 +228,5 @@ class Game:
         for upg in self.current_upg_options:
             upg.draw(self.window)
         pygame.display.update()
+
+    

@@ -46,6 +46,8 @@ class Projectile(GameObj):
             elif self.direction == "right":
                 self.global_x += self.speed
 
+            
+
             self.current_distance += self.speed
             if self.current_distance == self.max_range:
                 self.active = False

@@ -14,14 +14,14 @@ class Player(GameObj):
         self.update_display_pos(window)
         self.direction = "up"
         self.speed = speed
-        water_gun = Skill(
+        self.water_gun = Skill(
             "Water Gun", 
             Projectile(self.global_x, self.global_y, 10, 10, self, "assets/Bullet.png", 10, 25, self.direction, 500),
             1000,
             ["Forward"],
             ["Single"]
         )
-        fire_potion = Skill(
+        self.fire_potion = Skill(
             "Fire Potion", 
             Projectile(self.global_x, self.global_y, 20, 20, self, "assets/potion/frame_00_delay-0.4s.png", 10, 25, self.direction, 750),
             2000, 
@@ -29,7 +29,7 @@ class Player(GameObj):
             ["Aoe"],
             aoe = AOE(self.global_x, self.global_y, 40, 40, self, "assets/Rock.png", 150, 15, 30)
         )
-        self.skill_set = [water_gun]
+        self.skill_set = [self.water_gun]
         self.max_hp = 1000
         self.current_hp = self.max_hp  
         self.hp_bar = HpBar(self.max_hp)
@@ -95,3 +95,9 @@ class Player(GameObj):
                     self.skill_set[0].cooldown = 1
             case "water_gunupg2":
                 self.skill_set[0].shoot_type.append("Backward")
+
+    def gain_skill(self, skill):
+        match skill:
+            case "fire_potion":
+                self.skill_set.append(self.fire_potion)
+                
