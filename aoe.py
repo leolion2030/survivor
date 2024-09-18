@@ -8,4 +8,25 @@ class AOE(GameObj):
         self.duration = duration
         self.dmg = dmg
         self.dmgtick = dmgtick
+        self.active = False
+        self.curframe = 0
 
+    def start(self):
+        self.active = True
+
+
+    def stop(self):
+        self.active = False
+
+    def copy(self, x, y, player):
+        copy_aoe = AOE(x, y, self.width, self.height, player, None, self.duration, self.dmg, self.dmgtick)
+        copy_aoe.sprite = self.sprite
+        return copy_aoe
+
+    def update(self, player):
+        self.update_display_pos(player)
+        if self.active == True:
+            self.curframe += 1
+            if self.curframe >= self.duration:
+                self.stop()
+            

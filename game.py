@@ -163,6 +163,8 @@ class Game:
         for skill in self.player.skill_set:
             for projectile in skill.active_projectiles:
                 projectile.draw(self.window)
+            for aoe in skill.active_aoe:
+                aoe.draw(self.window)
 
     def draw_background(self):
         q1 = (0 - self.player.global_x % 1000, 0 - self.player.global_y % 1000)
@@ -186,9 +188,17 @@ class Game:
     def check_enemies_hit(self):
         for mob in self.mob_list:
             if mob.alive == True:
-                used_projectile = mob.check_collision(self.player.skill_set[0].active_projectiles)
-                if  used_projectile != None:
-                    mob.take_dmg(used_projectile.dmg)
+                water_projectile = mob.check_collision(self.player.skill_set[0].active_projectiles)
+                if  water_projectile != None:
+                    mob.take_dmg(water_projectile.dmg)
+
+                if len (self.player.skill_set) >= 2: 
+                    fire_projectile = mob.check_collision(self.player.skill_set[1].active_projectiles)
+                    if fire_projectile != None:
+                        mob.take_dmg(fire_projectile.dmg)
+                        new_aoe = self.player.skill_set[1].base_aoe.copy()
+                        new_aoe.start()
+                        self.player.skill_set[1].active_aoe.append(new_aoe)
 
     def spawn_enemies(self):
         amount_copy = 2

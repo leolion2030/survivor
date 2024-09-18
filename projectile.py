@@ -25,26 +25,30 @@ class Projectile(GameObj):
     def update(self, player):
         self.update_display_pos(player)
         if self.active == True:
-            if self.direction == "upright":
-                self.global_x += self.speed
-                self.global_y -= self.speed
-            elif self.direction == "upleft":
-                self.global_x -= self.speed
-                self.global_y -= self.speed
-            elif self.direction == "downright":
-                self.global_x += self.speed
-                self.global_y += self.speed
-            elif self.direction == "downleft":
-                self.global_x -= self.speed
-                self.global_y += self.speed
-            elif self.direction == "up":
-                self.global_y -= self.speed
-            elif self.direction == "down":
-                self.global_y += self.speed
-            elif self.direction == "left":
-                self.global_x -= self.speed
-            elif self.direction == "right":
-                self.global_x += self.speed
+            if type(self.direction) == str:
+                if self.direction == "upright":
+                    self.global_x += self.speed
+                    self.global_y -= self.speed
+                elif self.direction == "upleft":
+                    self.global_x -= self.speed
+                    self.global_y -= self.speed
+                elif self.direction == "downright":
+                    self.global_x += self.speed
+                    self.global_y += self.speed
+                elif self.direction == "downleft":
+                    self.global_x -= self.speed
+                    self.global_y += self.speed
+                elif self.direction == "up":
+                    self.global_y -= self.speed
+                elif self.direction == "down":
+                    self.global_y += self.speed
+                elif self.direction == "left":
+                    self.global_x -= self.speed
+                elif self.direction == "right":
+                    self.global_x += self.speed
+            elif type(self.direction) == list:
+                self.global_x += self.direction[0] * self.speed
+                self.global_y += self.direction[1] * self.speed
 
             
 

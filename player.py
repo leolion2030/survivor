@@ -23,7 +23,7 @@ class Player(GameObj):
         )
         self.fire_potion = Skill(
             "Fire Potion", 
-            Projectile(self.global_x, self.global_y, 20, 20, self, "assets/potion/frame_00_delay-0.4s.png", 10, 25, self.direction, 750),
+            Projectile(self.global_x, self.global_y, 50, 50, self, "assets/potion/frame_00_delay-0.4s.png", 10, 25, self.direction, 750),
             2000, 
             ["Nearest"],
             ["Aoe"],

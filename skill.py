@@ -9,7 +9,8 @@ class Skill:
         self.active_projectiles = []
         self.shoot_type = shoot_type
         self.hit_type = hit_type
-        self.aoe = aoe
+        self.base_aoe = aoe
+        self.active_aoe = []
 
     def use(self, player, nearest=None):
         center_x = player.global_x + (player.width/2) - (self.base_projectile.width/2)
@@ -39,6 +40,7 @@ class Skill:
 
             elif type == "Nearest":
                 print(self.calcdirection(player, nearest))
+                new_projectile = self.base_projectile.copy(center_x, center_y, self.calcdirection(player, nearest), player)
 
             self.active_projectiles.append(new_projectile)
             new_projectile.shoot()
@@ -48,6 +50,10 @@ class Skill:
             bullet.update(player)
             if bullet.active == False:
                 self.active_projectiles.remove(bullet)
+        for aoe in self.active_aoe:
+            aoe.update(player)
+            if aoe.active == False:
+                self.active_aoe.remove(aoe)
 
     def calcdirection(self, player, enemy):
         difx = enemy.global_x - player.global_x 
