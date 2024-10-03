@@ -11,6 +11,21 @@ class AOE(GameObj):
         self.active = False
         self.curframe = 0
         self.dealdmg = False
+        self.lava_sprite = [
+            pygame.image.load("assets/lava_pool/lava0.png"),
+            pygame.image.load("assets/lava_pool/lava1.png"),
+            pygame.image.load("assets/lava_pool/lava2.png"),
+            pygame.image.load("assets/lava_pool/lava3.png"),
+            pygame.image.load("assets/lava_pool/lava4.png"),
+            pygame.image.load("assets/lava_pool/lava5.png"),
+            pygame.image.load("assets/lava_pool/lava6.png"),
+            pygame.image.load("assets/lava_pool/lava7.png"),
+            pygame.image.load("assets/lava_pool/lava8.png"),
+            pygame.image.load("assets/lava_pool/lava9.png"),
+        ]
+        for i in range(len(self.lava_sprite)):
+            self.lava_sprite[i]  = pygame.transform.scale(self.lava_sprite[i], (self.width, self.height))
+            
 
     def start(self):
         self.active = True
@@ -34,4 +49,8 @@ class AOE(GameObj):
             self.curframe += 1
             if self.curframe >= self.duration:
                 self.stop()
+
+    def draw(self, window):
+        window.blit(self.lava_sprite[self.curframe % 10], (self.display_x, self.display_y))
+
             
