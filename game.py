@@ -48,6 +48,7 @@ class Game:
                 self.key_handler()
                 self.update()
                 self.check_enemies_hit()
+                self.in_dmg_area()
                 self.draw()
                 self.find_nearest_enemy()
             elif self.gamestate == "LevelUp":
@@ -146,6 +147,7 @@ class Game:
     def draw(self):
         self.window.fill((0, 0, 0))
         self.draw_background()
+        self.draw_aoe()
         self.player.draw(self.window)
         self.player.hp_bar.draw(self.window, self.player.display_x, self.player.display_y)
         self.player.exp_bar.draw(self.window)
@@ -163,6 +165,9 @@ class Game:
         for skill in self.player.skill_set:
             for projectile in skill.active_projectiles:
                 projectile.draw(self.window)
+
+    def draw_aoe(self):
+        for skill in self.player.skill_set:
             for aoe in skill.active_aoe:
                 aoe.draw(self.window)
 
@@ -196,10 +201,21 @@ class Game:
                     fire_projectile = mob.check_collision(self.player.skill_set[1].active_projectiles)
                     if fire_projectile != None:
                         mob.take_dmg(fire_projectile.dmg)
-                        new_aoe = self.player.skill_set[1].base_aoe.copy()
+                        new_aoe = self.player.skill_set[1].base_aoe.copy(fire_projectile.global_x, fire_projectile.global_y, self.player)
                         new_aoe.start()
                         self.player.skill_set[1].active_aoe.append(new_aoe)
 
+    def in_dmg_area(self):
+        if len(self.player.skill_set) > 1:
+            for mob in self.mob_list:
+                if mob.alive == True:
+                    fire_aoe = mob.check_aoe_collision(self.player.skill_set[1].active_aoe)
+                    if fire_aoe != None:
+                        if fire_aoe.dealdmg == True:
+                            print("Zombie took " + str(fire_aoe.dmg) + " damage")
+                            mob.take_dmg(fire_aoe.dmg)
+        
+    
     def spawn_enemies(self):
         amount_copy = 2
         for i in range(amount_copy):

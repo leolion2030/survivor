@@ -56,8 +56,9 @@ class Skill:
                 self.active_aoe.remove(aoe)
 
     def calcdirection(self, player, enemy):
-        difx = enemy.global_x - player.global_x 
-        dify = enemy.global_y - player.global_y
-        vector = pygame.math.Vector2(difx, dify)
-        diff = vector.normalize()
-        return [diff.x, diff.y] 
+        if enemy != None:
+            difx = enemy.global_x - player.global_x 
+            dify = enemy.global_y - player.global_y
+            vector = pygame.math.Vector2(difx, dify)
+            diff = vector.normalize()
+            return [diff.x, diff.y] 

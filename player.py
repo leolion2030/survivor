@@ -27,7 +27,7 @@ class Player(GameObj):
             2000, 
             ["Nearest"],
             ["Aoe"],
-            aoe = AOE(self.global_x, self.global_y, 40, 40, self, "assets/Rock.png", 150, 15, 30)
+            aoe = AOE(self.global_x, self.global_y, 125, 125, self, "assets/Rock.png", 150, 15, 30)
         )
         self.skill_set = [self.water_gun]
         self.max_hp = 1000

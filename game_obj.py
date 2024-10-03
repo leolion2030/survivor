@@ -45,6 +45,20 @@ class GameObj:
             projectile_list[collide].hit()
             return projectile_list[collide]
         
+    def check_aoe_collision(self, aoe_list):
+        #TODO: collide with multiple bullets
+        hitbox_list = []
+        for aoe in aoe_list:
+            if aoe.active == True:
+                hitbox_list.append(aoe.get_hitbox())
+
+        collide = self.get_hitbox().collidelist(hitbox_list)
+
+        if collide == -1:
+            return None
+        else:
+            return aoe_list[collide]
+        
     def get_center(self):
         x = self.global_x + self.width/2
         y = self.global_y + self.height/2

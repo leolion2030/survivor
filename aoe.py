@@ -10,6 +10,7 @@ class AOE(GameObj):
         self.dmgtick = dmgtick
         self.active = False
         self.curframe = 0
+        self.dealdmg = False
 
     def start(self):
         self.active = True
@@ -26,6 +27,10 @@ class AOE(GameObj):
     def update(self, player):
         self.update_display_pos(player)
         if self.active == True:
+            if self.curframe % self.dmgtick == 0:
+                self.dealdmg = True
+            else:
+                self.dealdmg = False 
             self.curframe += 1
             if self.curframe >= self.duration:
                 self.stop()
